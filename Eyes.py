@@ -9,13 +9,13 @@ from PIL import Image
 
 class Eyes:
 
-    def __init__(self, config, weights, resolution):
+    def __init__(self, config, weights, width, height):
 
         # need to initialize some stuff
         self.config = config  #The path to the config file
         self.weights = weights #The path to the weights file
-        self.width = resolution[1]
-        self.height = resolution[0]
+        self.width = width
+        self.height = height
 
         self.net = cv.dnn.readNetFromDarknet(self.config, self.weights)
         self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)

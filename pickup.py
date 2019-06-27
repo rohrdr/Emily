@@ -3,7 +3,7 @@
 Scripts to drive a donkey 2 car and train a model for it.
 
 Usage:
-    pickup.py (pickup)
+    python pickup.py
 
 Options:
     -h --help        Show this screen.
@@ -17,7 +17,7 @@ import donkeycar as dk
 from donkeycar.parts.camera import PiCamera
 from donkeycar.parts.actuator import PCA9685, PWMSteering, PWMThrottle
 from donkeycar.parts.datastore import TubGroup, TubWriter
-from donkeycar.parts.clock import Timestamp
+#from donkeycar.parts.clock import Timestamp
 from donkeycar.parts.network import TCPServeValue
 from donkeycar.parts.image import ImgArrToJpg
 from Eyes import Eyes
@@ -40,8 +40,8 @@ def pickup(cfg):
 
     V = dk.vehicle.Vehicle()
 
-    clock = Timestamp()
-    V.add(clock, outputs=['timestamp'])
+#    clock = Timestamp()
+#    V.add(clock, outputs=['timestamp'])
 
     cam = PiCamera(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH)
     # for Emily's setup we need to flip the camera and change the shutter speed
@@ -51,7 +51,7 @@ def pickup(cfg):
     V.add(cam, outputs=['image'], threaded=True)
 
     # get eyes
-    model = Eyes(cfg.MODEL_CFG, cfg.MODEL_WEIGHTS, cfg.CAMERA_RESOLUTION)
+    model = Eyes(cfg.MODEL_CFG, cfg.MODEL_WEIGHTS, cfg.IMAGE_W, cfg.IMAGE_H)
     V.add(model,
           inputs=['image'],
           outputs=['bboxes'])
@@ -103,8 +103,8 @@ def pickup(cfg):
         V.add(pub, inputs=['jpg/bin'])
 
     # add tub to save data
-    inputs = ['image', 'angle', 'throttle', 'timestamp']
-    types = ['image_array', 'float', 'float',  'str']
+    inputs = ['image', 'angle', 'throttle']
+    types = ['image_array', 'float', 'float']
 
     # multiple tubs
     # th = TubHandler(path=cfg.DATA_PATH)
