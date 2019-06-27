@@ -121,7 +121,6 @@ def pickup(cfg):
 
 
 if __name__ == '__main__':
-    args = docopt(__doc__)
     cfg = dk.load_config()
     pickup(cfg)
 
