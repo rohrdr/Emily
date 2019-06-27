@@ -63,6 +63,7 @@ def pickup(cfg):
           outputs=['angle', 'throttle', 'runtime', 'waittime', 'emily', 'emil', 'x', 'y'])
 
     # get Emil
+    arm_controller =
     emil = Emil()
     V.add(emil,
           inputs=['x', 'y'],

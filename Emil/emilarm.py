@@ -31,7 +31,7 @@ def set_servo_pulse(channel, pulse):
     pulse = int(pulse)
  #   print (pulse)
     pwm.set_pwm(channel, 0, pulse)
-    print motorpositions
+    print(motorpositions)
     
     
 def moveslow(channel,pulse):
@@ -88,7 +88,7 @@ def motors(x,y):
             signal[3]=i[3]
             
     if signal[2]==0:
-        print'i think the cigarette is too far'
+        print('i think the cigarette is too far')
     
     
     
@@ -127,14 +127,14 @@ while True:
     R,theta=radial(x,y)
     
     if R>30:
-        print "cigarette out of reach"
+        print("cigarette out of reach")
         
     else:
 
         positions=motors(x,y)
-        print R
-        print theta
-        print positions
+        print (R)
+        print (theta)
+        print (positions)
         
         for i in range(len(positions)):
             moveslow(i,positions[i])
