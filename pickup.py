@@ -107,12 +107,12 @@ def pickup(cfg):
     types = ['image_array', 'float', 'float']
 
     # multiple tubs
-    # th = TubHandler(path=cfg.DATA_PATH)
-    # tub = th.new_tub_writer(inputs=inputs, types=types)
+    th = TubHandler(path=cfg.DATA_PATH)
+    tub = th.new_tub_writer(inputs=inputs, types=types)
 
     # single tub
-    tub = TubWriter(path=cfg.TUB_PATH, inputs=inputs, types=types)
-    V.add(tub, inputs=inputs)
+    # tub = TubWriter(path=cfg.TUB_PATH, inputs=inputs, types=types)
+    # V.add(tub, inputs=inputs)
 
     # run the vehicle
     V.start(rate_hz=cfg.DRIVE_LOOP_HZ,
