@@ -1,8 +1,5 @@
 import cv2 as cv
-import sys
 import numpy as np
-import os.path
-import os
 import time
 from PIL import Image
 
@@ -11,35 +8,43 @@ class Eyes:
 
     def __init__(self, config, weights, width, height):
 
-        # need to initialize some stuff
-        self.config = config  #The path to the config file
-        self.weights = weights #The path to the weights file
-        self.width = width
-        self.height = height
-
-        self.net = cv.dnn.readNetFromDarknet(self.config, self.weights)
-        self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
-        self.net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
-
-
-        return
+        pass
 
     def run(self, image):
 
-        name = 'dummy.jpg'
-        img = Image.fromarray(np.uint8(image))
-        img.save(name)
-#        time.sleep(1)
-#        bbox = 'bla'
-        cap = cv.VideoCapture(name)
-        hasframe, frame = cap.read()
+        return []
 
-        start = time.time()
-        bbox = self.inference(frame)
-        end = time.time()
-        print('inference took ', end-start)
-
-        return bbox
+#     def __init__(self, config, weights, width, height):
+#
+#         # need to initialize some stuff
+#         self.config = config  #The path to the config file
+#         self.weights = weights #The path to the weights file
+#         self.width = width
+#         self.height = height
+#
+#         self.net = cv.dnn.readNetFromDarknet(self.config, self.weights)
+#         self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
+#         self.net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
+#
+#
+#         return
+#
+#     def run(self, image):
+#
+#         name = 'dummy.jpg'
+#         img = Image.fromarray(np.uint8(image))
+#         img.save(name)
+# #        time.sleep(1)
+# #        bbox = 'bla'
+#         cap = cv.VideoCapture(name)
+#         hasframe, frame = cap.read()
+#
+#         start = time.time()
+#         bbox = self.inference(frame)
+#         end = time.time()
+#         print('inference took ', end-start)
+#
+#         return bbox
 
     def getOutputsNames(self):
         # Get the names of all the layers in the network
