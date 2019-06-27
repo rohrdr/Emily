@@ -63,7 +63,7 @@ def pickup(cfg):
           outputs=['angle', 'throttle', 'runtime', 'waittime', 'emily', 'emil', 'x', 'y'])
 
     # get Emil
-    emil = Emil([0,1,2,3])
+    emil = Emil([0,1,2,3], cfg.PCA9685_I2C_ADDR, busnum=cfg.PCA9685_I2C_BUSNUM)
     V.add(emil,
           inputs=['x', 'y'],
           run_condition='emil')
