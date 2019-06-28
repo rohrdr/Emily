@@ -8,6 +8,8 @@ class Eyes:
 
     def __init__(self, config, weights, width, height):
 
+        print('initialize Eyes')
+
         pass
 
     def run(self, image):

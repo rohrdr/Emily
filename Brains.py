@@ -8,6 +8,8 @@ class Brains:
     def __init__(self, **kwargs):
         # need to initialize some stuff
 
+        print('initilialze Brains')
+
         try:
             path = kwargs['pic_to_reality_csv']
             self.pic_mapx, self.pic_mapy = get_maps_from_file(path)

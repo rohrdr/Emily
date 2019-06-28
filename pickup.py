@@ -62,11 +62,7 @@ def pickup(cfg):
           inputs=['bboxes'],
           outputs=['angle', 'throttle', 'runtime', 'waittime', 'emily', 'emil', 'x', 'y'])
 
-    # get Emil
-    emil = Emil([0,1,2,3], cfg.PCA9685_I2C_ADDR, busnum=cfg.PCA9685_I2C_BUSNUM)
-    V.add(emil,
-          inputs=['x', 'y'],
-          run_condition='emil')
+
 
     steering_controller = PCA9685(cfg.STEERING_CHANNEL, cfg.PCA9685_I2C_ADDR, busnum=cfg.PCA9685_I2C_BUSNUM)
     steering = PWMSteering(controller=steering_controller,
@@ -96,6 +92,12 @@ def pickup(cfg):
     # add the stopper
     runner2 = Runner()
     V.add(runner2, inputs=['waittime'], outputs=['throttle2'])
+
+    # get Emil
+    emil = Emil([0,1,2,3], cfg.PCA9685_I2C_ADDR, busnum=cfg.PCA9685_I2C_BUSNUM)
+    V.add(emil,
+          inputs=['x', 'y'],
+          run_condition='emil')
 
     if cfg.PUB_CAMERA_IMAGES:
         pub = TCPServeValue("camera")

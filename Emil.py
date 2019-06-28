@@ -8,6 +8,8 @@ class Emil:
     reset = [1.6, 0.8, 1, 1]
 
     def __init__(self, channels, address, frequency=50, busnum=None):
+
+        print('initialize Emil')
         # need to initialize some stuff
         self.channels = channels
         self.motorpositions = [0] * len(channels)
