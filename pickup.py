@@ -48,7 +48,7 @@ def pickup(cfg):
     cam.camera.hflip = True
     cam.camera.vflip = True
     cam.camera.shutter_speed = 5000
-    V.add(cam, outputs=['image'], threaded=True)
+    V.add(cam, inputs=[], outputs=['image'], threaded=True)
 
 
 
@@ -77,8 +77,8 @@ def pickup(cfg):
                            zero_pulse=cfg.THROTTLE_STOPPED_PWM,
                            min_pulse=cfg.THROTTLE_REVERSE_PWM)
 
-    V.add(steering, inputs=['angle'], run_condition='emily')
-    V.add(throttle, inputs=['throttle'], run_condition='emily')
+    V.add(steering, inputs=['angle'], outputs=[], run_condition='emily')
+    V.add(throttle, inputs=['throttle'], outputs=[], run_condition='emily')
 
     # add the stopper
     runner = Runner()
@@ -89,7 +89,7 @@ def pickup(cfg):
                            max_pulse=cfg.THROTTLE_FORWARD_PWM,
                            zero_pulse=cfg.THROTTLE_STOPPED_PWM,
                            min_pulse=cfg.THROTTLE_REVERSE_PWM)
-    V.add(throttle2, inputs=['throttle2'], run_condition='emily')
+    V.add(throttle2, inputs=['throttle2'], outputs=[], run_condition='emily')
 
     # add the stopper
     runner2 = Runner()
@@ -104,7 +104,7 @@ def pickup(cfg):
     if cfg.PUB_CAMERA_IMAGES:
         pub = TCPServeValue("camera")
         V.add(ImgArrToJpg(), inputs=['image'], outputs=['jpg/bin'])
-        V.add(pub, inputs=['jpg/bin'])
+        V.add(pub, inputs=['jpg/bin'], outputs=[])
 
     # add tub to save data
     inputs = ['image', 'angle', 'throttle']
