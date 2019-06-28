@@ -114,7 +114,7 @@ def pickup(cfg):
 
     # single tub
     # tub = TubWriter(path=cfg.TUB_PATH, inputs=inputs, types=types)
-    V.add(tub, inputs=inputs)
+    V.add(tub, inputs=inputs, outputs=["tub/num_records"])
 
     # run the vehicle
     V.start(rate_hz=cfg.DRIVE_LOOP_HZ,

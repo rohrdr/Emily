@@ -14,6 +14,10 @@ class Eyes:
 
     def run(self, image):
 
+        import time
+
+        time.sleep(10)
+
         return []
 
 #     def __init__(self, config, weights, width, height):

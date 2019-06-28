@@ -23,7 +23,7 @@ class Brains:
 
         print('in brains')
         print(bbox)
-        throttle = 0.55
+        throttle = 0.3
 
         emily = True
         emil = False
