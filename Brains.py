@@ -30,6 +30,8 @@ class Brains:
         angle, x, y = self.path_planning(bbox)
         if y == 0.0:
             runtime = 1.0
+            throttle = 0.5
+            print('y==0')
 #            throttle = 0.7
         elif  np.sqrt(x*x + y*y) < 30.0:
             print('I\'m there! Emil take over please!')
