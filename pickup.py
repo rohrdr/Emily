@@ -103,7 +103,7 @@ def pickup(cfg):
 
     if cfg.PUB_CAMERA_IMAGES:
         pub = TCPServeValue("camera")
-        V.add(ImgArrToJpg(), inputs=['cam/image_array'], outputs=['jpg/bin'])
+        V.add(ImgArrToJpg(), inputs=['image'], outputs=['jpg/bin'])
         V.add(pub, inputs=['jpg/bin'])
 
     # add tub to save data
