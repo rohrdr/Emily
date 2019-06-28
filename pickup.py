@@ -50,6 +50,18 @@ def pickup(cfg):
     cam.camera.shutter_speed = 5000
     V.add(cam, outputs=['image'], threaded=True)
 
+    # add tub to save data
+    inputs = ['image', 'angle', 'throttle']
+    types = ['image_array', 'float', 'float']
+
+    # multiple tubs
+    th = TubHandler(path=cfg.DATA_PATH)
+    tub = th.new_tub_writer(inputs=inputs, types=types)
+
+    # single tub
+    # tub = TubWriter(path=cfg.TUB_PATH, inputs=inputs, types=types)
+    V.add(tub, inputs=inputs, outputs=["tub/num_records"])
+
     # get eyes
     model = Eyes(cfg.MODEL_CFG, cfg.MODEL_WEIGHTS, cfg.IMAGE_W, cfg.IMAGE_H)
     V.add(model,
@@ -104,17 +116,7 @@ def pickup(cfg):
         V.add(ImgArrToJpg(), inputs=['cam/image_array'], outputs=['jpg/bin'])
         V.add(pub, inputs=['jpg/bin'])
 
-    # add tub to save data
-    inputs = ['image', 'angle', 'throttle']
-    types = ['image_array', 'float', 'float']
 
-    # multiple tubs
-    th = TubHandler(path=cfg.DATA_PATH)
-    tub = th.new_tub_writer(inputs=inputs, types=types)
-
-    # single tub
-    # tub = TubWriter(path=cfg.TUB_PATH, inputs=inputs, types=types)
-    V.add(tub, inputs=inputs, outputs=["tub/num_records"])
 
     # run the vehicle
     V.start(rate_hz=cfg.DRIVE_LOOP_HZ,
