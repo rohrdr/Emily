@@ -41,7 +41,8 @@ class Eyes:
         img.save(name)
  #       time.sleep(1)
  #       bbox = 'bla'
-        cap = cv.VideoCapture(name)
+        cheat = 'cheat.jpg'
+        cap = cv.VideoCapture(cheat)
         hasframe, frame = cap.read()
 
         start = time.time()
