@@ -26,6 +26,7 @@ class Brains:
 
         emily = False
         emil = True
+        emil3 = 1.0
         angle, x, y = self.path_planning(bbox)
         if y == 0.0:
             runtime = 0.5
