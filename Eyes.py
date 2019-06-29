@@ -6,51 +6,50 @@ from PIL import Image
 
 class Eyes:
 
+#    def __init__(self, config, weights, width, height):
+#
+#        print('initialize Eyes')
+#
+#        pass
+#
+#    def run(self, image):
+#
+#        import time
+#
+#        time.sleep(1)
+#
+#        return []
+#
     def __init__(self, config, weights, width, height):
 
-        print('initialize Eyes')
+        # need to initialize some stuff
+        self.config = config  #The path to the config file
+        self.weights = weights #The path to the weights file
+        self.width = width
+        self.height = height
 
-        pass
+        self.net = cv.dnn.readNetFromDarknet(self.config, self.weights)
+        self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
+        self.net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
+
+        return
 
     def run(self, image):
 
-        import time
+        name = 'dummy.jpg'
+        img = Image.fromarray(np.uint8(image))
+        img.save(name)
+ #       time.sleep(1)
+ #       bbox = 'bla'
+        cap = cv.VideoCapture(name)
+        hasframe, frame = cap.read()
 
-        time.sleep(10)
+        start = time.time()
+        bbox = self.inference(frame)
+        end = time.time()
+#       print('inference took ', end-start)
 
-        return []
-
-#     def __init__(self, config, weights, width, height):
-#
-#         # need to initialize some stuff
-#         self.config = config  #The path to the config file
-#         self.weights = weights #The path to the weights file
-#         self.width = width
-#         self.height = height
-#
-#         self.net = cv.dnn.readNetFromDarknet(self.config, self.weights)
-#         self.net.setPreferableBackend(cv.dnn.DNN_BACKEND_OPENCV)
-#         self.net.setPreferableTarget(cv.dnn.DNN_TARGET_CPU)
-#
-#
-#         return
-#
-#     def run(self, image):
-#
-#         name = 'dummy.jpg'
-#         img = Image.fromarray(np.uint8(image))
-#         img.save(name)
-# #        time.sleep(1)
-# #        bbox = 'bla'
-#         cap = cv.VideoCapture(name)
-#         hasframe, frame = cap.read()
-#
-#         start = time.time()
-#         bbox = self.inference(frame)
-#         end = time.time()
-#         print('inference took ', end-start)
-#
-#         return bbox
+        return bbox
 
     def getOutputsNames(self):
         # Get the names of all the layers in the network

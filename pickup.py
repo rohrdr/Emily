@@ -43,29 +43,37 @@ def pickup(cfg):
 #    clock = Timestamp()
 #    V.add(clock, outputs=['timestamp'])
 
-    cam = PiCamera(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH)
+#    cam = PiCamera(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH)
     # for Emily's setup we need to flip the camera and change the shutter speed
-    cam.camera.hflip = True
-    cam.camera.vflip = True
-    cam.camera.shutter_speed = 5000
-    V.add(cam, inputs=[], outputs=['image'], threaded=True)
+#    cam.camera.hflip = True
+#    cam.camera.vflip = True
+#    cam.camera.shutter_speed = 5000
+#    V.add(cam, inputs=[], outputs=['image'], threaded=True)
 
 
+    inputs = []
+    threaded = True
+    print("cfg.CAMERA_TYPE", cfg.CAMERA_TYPE)
+    from donkeycar.parts.camera import PiCamera
+    cam = PiCamera(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH)
+    V.add(cam, inputs=inputs, outputs=['image'], threaded=threaded)
 
-    # get eyes
+#
+#    # get eyes
     model = Eyes(cfg.MODEL_CFG, cfg.MODEL_WEIGHTS, cfg.IMAGE_W, cfg.IMAGE_H)
     V.add(model,
           inputs=['image'],
           outputs=['bboxes'])
-
+#
     # get strategy
     strategy = Brains(pic_to_reality_csv=cfg.MAP_PATH)
     V.add(strategy,
           inputs=['bboxes'],
-          outputs=['angle', 'throttle', 'runtime', 'waittime', 'emily', 'emil', 'x', 'y'])
+          outputs=['angle', 'throttle', 'runtime', 'waittime', 'emily', 'emil', 'x', 'y', 'emil3', 'emil3rest'])
 
 
 
+    print('steering channel ', cfg.STEERING_CHANNEL, ' throttle channel ', cfg.THROTTLE_CHANNEL)
     steering_controller = PCA9685(cfg.STEERING_CHANNEL, cfg.PCA9685_I2C_ADDR, busnum=cfg.PCA9685_I2C_BUSNUM)
     steering = PWMSteering(controller=steering_controller,
                            left_pulse=cfg.STEERING_LEFT_PWM,
@@ -80,44 +88,52 @@ def pickup(cfg):
     V.add(steering, inputs=['angle'], outputs=[], run_condition='emily')
     V.add(throttle, inputs=['throttle'], outputs=[], run_condition='emily')
 
-    # add the stopper
+#    # add the stopper
     runner = Runner()
     V.add(runner, inputs=['runtime'], outputs=['throttle2'])
-
-    # add second throttle
+#
+#    # add second throttle
     throttle2 = PWMThrottle(controller=throttle_controller,
                            max_pulse=cfg.THROTTLE_FORWARD_PWM,
                            zero_pulse=cfg.THROTTLE_STOPPED_PWM,
                            min_pulse=cfg.THROTTLE_REVERSE_PWM)
     V.add(throttle2, inputs=['throttle2'], outputs=[], run_condition='emily')
-
-    # add the stopper
+#
+#    # add the stopper
     runner2 = Runner()
     V.add(runner2, inputs=['waittime'], outputs=['throttle2'])
-
-    # get Emil
-    emil = Emil([0,1,2,3], cfg.PCA9685_I2C_ADDR, busnum=cfg.PCA9685_I2C_BUSNUM)
-    V.add(emil,
-          inputs=['x', 'y'],
+#
+#    # get Emil
+#    emil = Emil([0,1,2,3], cfg.PCA9685_I2C_ADDR, busnum=cfg.PCA9685_I2C_BUSNUM)
+    emil3_controller = PCA9685(3, cfg.PCA9685_I2C_ADDR, busnum=cfg.PCA9685_I2C_BUSNUM)
+    emil3 = Emil(emil3_controller, 1.0)
+    V.add(emil3,
+          inputs=['emil3'],
+          outputs=[],
           run_condition='emil')
 
+    V.add(emil3,
+            inputs=['emil3rest'],
+            outputs=[],
+            run_condition='emil')
+#
     if cfg.PUB_CAMERA_IMAGES:
         pub = TCPServeValue("camera")
         V.add(ImgArrToJpg(), inputs=['image'], outputs=['jpg/bin'])
         V.add(pub, inputs=['jpg/bin'], outputs=[])
-
-    # add tub to save data
+#
+#    # add tub to save data
     inputs = ['image', 'angle', 'throttle']
     types = ['image_array', 'float', 'float']
-
-    # multiple tubs
+#
+#    # multiple tubs
     th = TubHandler(path=cfg.DATA_PATH)
     tub = th.new_tub_writer(inputs=inputs, types=types)
-
-    # single tub
-    # tub = TubWriter(path=cfg.TUB_PATH, inputs=inputs, types=types)
-#    V.add(tub, inputs=inputs, outputs=["tub/num_records"])
-
+#
+#    # single tub
+#    # tub = TubWriter(path=cfg.TUB_PATH, inputs=inputs, types=types)
+    V.add(tub, inputs=inputs, outputs=["tub/num_records"])
+#
     # run the vehicle
     V.start(rate_hz=cfg.DRIVE_LOOP_HZ,
             max_loop_count=cfg.MAX_LOOPS)

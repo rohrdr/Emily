@@ -9,6 +9,8 @@ class Brains:
         # need to initialize some stuff
 
         print('initilialze Brains')
+        self.mylist = [0.7, 1.2] * 2
+        self.myotherlist = [True, False] * 2
 
         try:
             path = kwargs['pic_to_reality_csv']
@@ -19,19 +21,30 @@ class Brains:
 
         return
 
-    def run(self, bbox):
+    def run2(self):
 
+        angle = self.mylist.pop()
+        throttle = 1.0
+        print(self.mylist)
+        print('angle', angle, 'throttle', throttle)
+        return angle, throttle, True
+
+    def run(self, bbox):
+#    def run(self):
+
+        bbox = []
         print('in brains')
         print(bbox)
         throttle = 0.3
 
-        emily = True
-        emil = False
+        emily = False
+        emil = True
         angle, x, y = self.path_planning(bbox)
         if y == 0.0:
-            runtime = 1.0
-            throttle = 0.5
-            print('y==0')
+            runtime = 0.5
+            throttle = 1.0
+            angle = -0.5
+            print('y==0', runtime, throttle)
 #            throttle = 0.7
         elif  np.sqrt(x*x + y*y) < 30.0:
             print('I\'m there! Emil take over please!')
@@ -44,7 +57,12 @@ class Brains:
             runtime = 0.3
         waittime = 1.0
 
-        return angle, throttle, runtime, waittime, emily, emil, x, y
+
+        emil = self.myotherlist.pop()
+        emily = not emil
+        emil3 = self.mylist.pop()
+
+        return angle, throttle, runtime, waittime, emily, emil, x, y, emil3, 1.0
 
     def path_planning(self, bbox):
 
