@@ -19,7 +19,7 @@ class Brains:
 
     def run(self, bbox):
 
-        bbox = []
+#        bbox = []
         print('in brains')
         print(bbox)
         throttle = 0.3
