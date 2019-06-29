@@ -43,17 +43,16 @@ def pickup(cfg):
 #    clock = Timestamp()
 #    V.add(clock, outputs=['timestamp'])
 
-#    cam = PiCamera(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH)
+    cam = PiCamera(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH)
     # for Emily's setup we need to flip the camera and change the shutter speed
-#    cam.camera.hflip = True
-#    cam.camera.vflip = True
-#    cam.camera.shutter_speed = 5000
-#    V.add(cam, inputs=[], outputs=['image'], threaded=True)
+    cam.camera.hflip = True
+    cam.camera.vflip = True
+    cam.camera.shutter_speed = 5000
+    V.add(cam, inputs=[], outputs=['image'], threaded=True)
 
 
     inputs = []
     threaded = True
-    print("cfg.CAMERA_TYPE", cfg.CAMERA_TYPE)
     from donkeycar.parts.camera import PiCamera
     cam = PiCamera(image_w=cfg.IMAGE_W, image_h=cfg.IMAGE_H, image_d=cfg.IMAGE_DEPTH)
     V.add(cam, inputs=inputs, outputs=['image'], threaded=threaded)

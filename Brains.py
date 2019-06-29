@@ -8,10 +8,6 @@ class Brains:
     def __init__(self, **kwargs):
         # need to initialize some stuff
 
-        print('initilialze Brains')
-        self.mylist = [0.7, 1.2] * 2
-        self.myotherlist = [True, False] * 2
-
         try:
             path = kwargs['pic_to_reality_csv']
             self.pic_mapx, self.pic_mapy = get_maps_from_file(path)
@@ -21,16 +17,7 @@ class Brains:
 
         return
 
-    def run2(self):
-
-        angle = self.mylist.pop()
-        throttle = 1.0
-        print(self.mylist)
-        print('angle', angle, 'throttle', throttle)
-        return angle, throttle, True
-
     def run(self, bbox):
-#    def run(self):
 
         bbox = []
         print('in brains')
@@ -57,11 +44,6 @@ class Brains:
             runtime = 0.3
         waittime = 1.0
 
-
-        emil = self.myotherlist.pop()
-        emily = not emil
-        emil3 = self.mylist.pop()
-
         return angle, throttle, runtime, waittime, emily, emil, x, y, emil3, 1.0
 
     def path_planning(self, bbox):
@@ -75,11 +57,6 @@ class Brains:
         xpic = bbox[0][2]
         ypic = bbox[0][3]
         print('xpic ', xpic, 'ypic', ypic)
-
-        # physical_x = np.random.randint(0,2592)
-        # physical_y = np.random.randint(0,1944)
-        # xpic = physical_x / 2592.0
-        # ypic = physical_y / 1944.0
 
         x, y = self.pictoreal(xpic, ypic)
 
