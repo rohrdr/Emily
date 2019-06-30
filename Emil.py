@@ -12,6 +12,7 @@ class Emil:
         return
 
     def run(self, signal):
+        print('in Emil')
 
         if (self.position - signal) > 0:
             step = -0.01

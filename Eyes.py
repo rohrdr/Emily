@@ -36,17 +36,8 @@ class Eyes:
 
     def run(self, image):
 
-        name = 'dummy.jpg'
-        img = Image.fromarray(np.uint8(image))
-        img.save(name)
- #       time.sleep(1)
- #       bbox = 'bla'
-        cheat = 'cheat.jpg'
-        cap = cv.VideoCapture(cheat)
-        hasframe, frame = cap.read()
-
         start = time.time()
-        bbox = self.inference(frame)
+        bbox = self.inference(image)
         end = time.time()
 #       print('inference took ', end-start)
 
